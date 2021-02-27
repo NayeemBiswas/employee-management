@@ -2,7 +2,7 @@
  * @Since Feb 26, 2021
  * @Author Nayeem Biswas
  * @Project employee-management
- * @Package employee-management
+ * @Package com.nayeem.employee.management.model.dto
  */
 package com.nayeem.employee.management.model.dto;
 

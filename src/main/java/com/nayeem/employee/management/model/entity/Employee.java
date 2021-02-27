@@ -2,7 +2,7 @@
  * @Since Feb 26, 2021
  * @Author Nayeem Biswas
  * @Project employee-management
- * @Package employee-management
+ * @Package com.nayeem.employee.management.model.entity
  */
 package com.nayeem.employee.management.model.entity;
 
@@ -16,9 +16,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import com.nayeem.employee.management.common.message.CustomMessage;
 
@@ -42,6 +44,11 @@ public class Employee {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GenericGenerator(name = "employee_seq",strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+	parameters = {@Parameter(name = "sequence_name", value = "employee_sequence"),
+			@Parameter(name = "initial_value", value = "1000"),
+	        @Parameter(name = "increment_size", value = "1")
+	})        
 	private Long id;
 	
 	@NotNull(message = CustomMessage.NOT_NULL)
@@ -60,7 +67,7 @@ public class Employee {
 	private String phone;
 	
 	@NotNull(message = CustomMessage.NOT_NULL)
-	@Column(name = "phone")
+	@Column(name = "grade")
 	@Size(max = 10, message = "Grade Can't be more than {max}")
 //	@Digits(fraction = 0, integer = 1)
 	private String grade;

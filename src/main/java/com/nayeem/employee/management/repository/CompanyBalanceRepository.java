@@ -2,7 +2,7 @@
  * @Since Feb 26, 2021
  * @Author Nayeem Biswas
  * @Project employee-management
- * @Package employee-management
+ * @Package com.nayeem.employee.management.repository
  */
 package com.nayeem.employee.management.repository;
 
@@ -15,5 +15,5 @@ import com.nayeem.employee.management.model.entity.CompanyBalance;
  *
  */
 public interface CompanyBalanceRepository extends JpaRepository<CompanyBalance, Integer> {
-
+	
 }

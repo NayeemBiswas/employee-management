@@ -7,6 +7,7 @@
 package com.nayeem.employee.management.common.utill;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 import com.nayeem.employee.management.model.dto.BankAccountDto;
 import com.nayeem.employee.management.model.dto.EmployeeDto;
@@ -18,6 +19,8 @@ import com.nayeem.employee.management.model.entity.Employee;
  * @author Nayeem
  *
  */
+
+@Service
 public class CopyProperties {
 
 	/**

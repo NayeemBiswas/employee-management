@@ -2,7 +2,7 @@
  * @Since Feb 26, 2021
  * @Author Nayeem Biswas
  * @Project employee-management
- * @Package employee-management
+ * @Package com.nayeem.employee.management.service
  */
 package com.nayeem.employee.management.service;
 
@@ -25,5 +25,7 @@ public interface EmployeeService {
 	public BaseResponse transferSalary();
 	
 	public List<SalarySheetDto> salarySheet();
+	
+	public BaseResponse setSalary(Double amount);
 
 }

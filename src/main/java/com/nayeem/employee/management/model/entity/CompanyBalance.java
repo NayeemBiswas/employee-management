@@ -2,7 +2,7 @@
  * @Since Feb 26, 2021
  * @Author Nayeem Biswas
  * @Project employee-management
- * @Package employee-management
+ * @Package com.nayeem.employee.management.model.entity
  */
 package com.nayeem.employee.management.model.entity;
 
@@ -10,13 +10,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import com.nayeem.employee.management.common.message.CustomMessage;
 
@@ -47,6 +44,6 @@ public class CompanyBalance {
 	@NotNull(message = CustomMessage.NOT_NULL)
 	@Column(name = "balance")
 	@Digits(fraction = 2, integer = 9)
-	private Double Balance;
+	private Double balance;
 
 }
