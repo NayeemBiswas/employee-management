@@ -45,10 +45,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
 	private CopyProperties copyProperties;
-	
+
 	@Autowired
 	private CompanyBalanceService companyBalanceService;
-	
+
 	private Double paidammount = 0.00;
 
 	@Override
@@ -76,8 +76,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 				} catch (DataIntegrityViolationException e) {
 					throw new CustomDataIntegrityViolationException(CustomMessage.SAVE_FAILED_MESSAGE);
 				}
-			}
-			else {
+			} else {
 				return new BaseResponse(CustomMessage.SAVE_FAILED_MESSAGE, HttpStatus.NOT_ACCEPTABLE.value());
 			}
 		} else {
@@ -92,87 +91,84 @@ public class EmployeeServiceImpl implements EmployeeService {
 				throw new CustomDataIntegrityViolationException(CustomMessage.UPDATE_FAILED_MESSAGE);
 			}
 		}
-		
+
 	}
-	
-	
 
 	@Override
 	public BaseResponse transferSalary() {
-		
+
 		List<Employee> employees = employeeRepository.findAll();
-		
+
 		try {
-			
-		employees.stream().forEach(employee -> {
-			addAmmountInEmployeAccount(employee);
-			paidammount += employee.getSalary();
-		});
-		return new BaseResponse("Total Transfer Ammount" + paidammount , HttpStatus.CREATED.value());
-		}catch (SalaryNotSetException e) {
+
+			employees.stream().forEach(employee -> {
+				addAmmountInEmployeAccount(employee);
+				paidammount += employee.getSalary();
+			});
+			return new BaseResponse("Total Transfer Ammount" + paidammount, HttpStatus.CREATED.value());
+		} catch (SalaryNotSetException e) {
 			throw new SalaryNotSetException("Set Salary First");
 		}
 	}
 
 	@Override
 	public List<SalarySheetDto> salarySheet() {
-		
+
 		List<Employee> employees = employeeRepository.findAll();
 		return employees.stream().map(employee -> copyProperties.setSalarySheet(employee)).collect(Collectors.toList());
 	}
-	
-	public void addAmmountInEmployeAccount(Employee employee)
-	{		
-		if(employee.getAccount().getCurrentBalance()> 0)
-		{
+
+	public void addAmmountInEmployeAccount(Employee employee) {
+		if (employee.getSalary() <= 0 || employee.getSalary() == null) {
 			throw new SalaryNotSetException("Set Salary First");
-		}else if (companyBalanceService.currentBalance()<employee.getSalary()) {
+		} else if (companyBalanceService.currentBalance() < employee.getSalary()) {
 			throw new InsuficientBalanceException(CustomMessage.INSUFICIENT_BALANCE);
-		}else {
-			employee.getAccount().setCurrentBalance(employee.getAccount().getCurrentBalance() + employee.getSalary());
-			bankAccountRepository.save(employee.getAccount());
-			companyBalanceService.withdrowBalance(employee.getSalary());
+		} else {
+			if (employee.getAccount().getCurrentBalance() == null) {
+				employee.getAccount().setCurrentBalance(employee.getSalary());
+				bankAccountRepository.save(employee.getAccount());
+				companyBalanceService.withdrowBalance(employee.getSalary());
+			} else {
+				employee.getAccount()
+						.setCurrentBalance(employee.getAccount().getCurrentBalance() + employee.getSalary());
+				bankAccountRepository.save(employee.getAccount());
+				companyBalanceService.withdrowBalance(employee.getSalary());
+			}
 		}
-		
+
 	}
 
 	@Override
 	public BaseResponse setSalary(Double amount) {
 		List<Employee> employees = employeeRepository.findAll();
-		
+
 		try {
 			employees.stream().forEach(employee -> {
 				double basicSalary = 0;
-				
-				if(employee.getGrade().equals("six"))
-				{
+
+				if (employee.getGrade().equals("six")) {
 					basicSalary = amount;
-				}else if(employee.getGrade().equals("five"))
-				{
+				} else if (employee.getGrade().equals("five")) {
 					basicSalary = amount + 5000.00;
-				}else if(employee.getGrade().equals("four"))
-				{
+				} else if (employee.getGrade().equals("four")) {
 					basicSalary = amount + 10000.00;
-				}else if(employee.getGrade().equals("three"))
-				{
+				} else if (employee.getGrade().equals("three")) {
 					basicSalary = amount + 15000.00;
-				}else if(employee.getGrade().equals("two"))
-				{
+				} else if (employee.getGrade().equals("two")) {
 					basicSalary = amount + 20000.00;
-				}else if(employee.getGrade().equals("one"))
-				{
+				} else if (employee.getGrade().equals("one")) {
 					basicSalary = amount + 25000.00;
 				}
 				employee.setSalary(basicSalary + (basicSalary * 0.35));
 				employeeRepository.save(employee);
 			});
-			
+
 			return new BaseResponse(CustomMessage.SALARY_SET, HttpStatus.CREATED.value());
-			
+
 		} catch (Exception e) {
 			throw new CustomDataIntegrityViolationException("Salary Set Failed");
 		}
-		
+
 	}
 
 }

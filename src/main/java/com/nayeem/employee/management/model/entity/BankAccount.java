@@ -56,8 +56,7 @@ public class BankAccount {
 	@Size(max = 50, message = "Account Number Can't be more than {max}")
 	private String accountNumber;
 	
-	@NotNull(message = CustomMessage.NOT_NULL)
-	@Column(name = "current_balance")
+	@Column(name = "current_balance", nullable = true)
 	@Digits(fraction = 2, integer = 9)
 	private Double currentBalance;
 	

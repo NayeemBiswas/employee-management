@@ -16,4 +16,6 @@ import com.nayeem.employee.management.model.entity.CompanyBalance;
  */
 public interface CompanyBalanceRepository extends JpaRepository<CompanyBalance, Integer> {
 	
+//	Boolean existsByProductByBrandNo(String productByBrandNo);
+	
 }

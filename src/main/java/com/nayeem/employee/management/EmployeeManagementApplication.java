@@ -22,8 +22,11 @@ public class EmployeeManagementApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		
+		if(balanceRepository.existsById(1) == false)
+		{
 		CompanyBalance companyBalance = new CompanyBalance(1, new Date(), (double) 0);
 		balanceRepository.save(companyBalance);
+		}
 	}
 
 }
