@@ -14,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,19 +47,19 @@ public class EmployeeController {
 		return new ResponseEntity<>(response, response.getCode() == 201 ? HttpStatus.CREATED : HttpStatus.NOT_FOUND);
 	}
 	
-	@PostMapping("/profile")
+	@GetMapping("/profile")
 	public EmployeeDto employeeInfo(String email)
 	{
 		return employeeService.getEmployeeInfo(email);
 	}
 	
-	@PostMapping(value = "/trans-salary")
+	@PutMapping(value = "/trans-salary")
 	public ResponseEntity<BaseResponse> salaryTransfer() {
 		BaseResponse response = employeeService.transferSalary();
 		return new ResponseEntity<>(response, response.getCode() == 201 ? HttpStatus.CREATED : HttpStatus.NOT_FOUND);
 	}
 	
-	@PostMapping(value = "/salary-sheet")
+	@GetMapping(value = "/salary-sheet")
 	public ResponseEntity<List<SalarySheetDto>> salarySheet() {
 		List<SalarySheetDto> response = employeeService.salarySheet();
 		return new ResponseEntity<List<SalarySheetDto>>(response, HttpStatus.OK);
